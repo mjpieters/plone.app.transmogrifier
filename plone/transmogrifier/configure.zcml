@@ -1,0 +1,30 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    i18n_domain="plone.transmogrifier">
+
+<utility
+    component=".atschemaupdater.ATSchemaUpdaterSection"
+    name="plone.transmogrifier.atschemaupdater"
+    />
+
+<utility
+    component=".workflowupdater.WorkflowUpdaterSection"
+    name="plone.transmogrifier.workflowupdater"
+    />
+
+<utility
+    component=".browserdefault.BrowserDefaultSection"
+    name="plone.transmogrifier.browserdefault"
+    />
+
+<utility
+    component=".criteria.CriterionAdder"
+    name="plone.transmogrifier.criterionadder"
+    />
+
+<utility
+    component=".portaltransforms.PortalTransformsSection"
+    name="plone.transmogrifier.portaltransforms"
+    />
+
+</configure>

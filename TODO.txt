@@ -1,0 +1,32 @@
+TODO
+====
+
+- Create more sections:
+
+  - references
+
+    - For archetypes-field managed references, a path resolver would suffice,
+      as ReferenceField and ReverseReferenceField take objects or UIDs.
+
+  - archetypes mimetype encapsulator. File, image and text fields need a 
+    mimetype, with the data wrapped in a OFS.Image.File object. This section
+    should take a mimetype key and a data key and replace these with the
+    OFS.Image.File object.
+
+  - URLNormalizer section to generate suitable ids.
+
+  - Clean up docs and tests for new sections from Florian (criteria, 
+    browserdefault, changes to constructor)
+
+- Define a 'default import pipeline' variable in the transmogrifier section,
+  so you can include a default set of sections that'll work for 95% of the
+  transmogrifier import cases. The goal is to have a pipeline definition like
+  this::
+
+    include = plone.transmogrifier.config:ploneimport.cfg
+    pipeline =
+        my.specific.import.section
+        ${ploneimport:importpipeline}
+
+  With a black box section that could even be done without variable
+  substitution.
