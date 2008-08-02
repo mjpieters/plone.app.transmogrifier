@@ -13,8 +13,8 @@ from Products.Five import zcml
 ctSectionsSetup = sectionsSetUp
 def sectionsSetUp(test):
     ctSectionsSetup(test)
-    import plone.transmogrifier
-    zcml.load_config('configure.zcml', plone.transmogrifier)
+    import plone.app.transmogrifier
+    zcml.load_config('configure.zcml', plone.app.transmogrifier)
 
 def portalTransformsSetUp(test):
     sectionsSetUp(test)
@@ -97,7 +97,7 @@ def aTSchemaUpdaterSetUp(test):
                      title='Should not be updated, not an AT base object'),
             )
     provideUtility(SchemaSource,
-        name=u'plone.transmogrifier.tests.schemasource')
+        name=u'plone.app.transmogrifier.tests.schemasource')
 
 def workflowUpdaterSetUp(test):
     sectionsSetUp(test)
@@ -148,7 +148,7 @@ def workflowUpdaterSetUp(test):
                      title='Should not be updated, no such transition'),
             )
     provideUtility(WorkflowSource,
-        name=u'plone.transmogrifier.tests.workflowsource')
+        name=u'plone.app.transmogrifier.tests.workflowsource')
 
 
 def browserDefaultSetUp(test):
@@ -195,7 +195,7 @@ def browserDefaultSetUp(test):
                      title='Should not be updated, no layout or defaultpage'),
             )
     provideUtility(BrowserDefaultSource,
-        name=u'plone.transmogrifier.tests.browserdefaultsource')
+        name=u'plone.app.transmogrifier.tests.browserdefaultsource')
 
 
 def test_suite():

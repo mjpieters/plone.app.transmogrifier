@@ -4,7 +4,7 @@ Workflow updater section
 A workflow updater pipeline section is another important transmogrifier
 content import pipeline element. It executes workflow transitions on Plone
 content based on the items it processes. The workflow updater section
-blueprint name is ``plone.transmogrifier.workflowupdater``. Workflow updater
+blueprint name is ``plone.app.transmogrifier.workflowupdater``. Workflow updater
 sections operate on objects already present in the ZODB, be they created by a
 constructor or pre-existing objects.
 
@@ -15,8 +15,8 @@ missing any of these two pieces will be skipped. Similarly, items with a path
 that doesn't exist will be skipped as well.
 
 For the object path, it'll look (in order) for
-``_plone.transmogrifier.atschemaupdater_[sectionname]_path``,
-``_plone.transmogrifier.atschemaupdater_path``, ``_[sectionname]_path`` and
+``_plone.app.transmogrifier.atschemaupdater_[sectionname]_path``,
+``_plone.app.transmogrifier.atschemaupdater_path``, ``_[sectionname]_path`` and
 ``_path``, where ``[sectionname]`` is replaced with the name given to the
 current section. This allows you to target the right section precisely if
 needed. Alternatively, you can specify what key to use for the path by
@@ -26,8 +26,8 @@ expressions).
 
 For the transitions, use the ``transitions-key`` option (same interpretation
 as ``path-key``), defaulting to
-``_plone.transmogrifier.atschemaupdater_[sectionname]_transitions``,
-``_plone.transmogrifier.atschemaupdater_transitions``,
+``_plone.app.transmogrifier.atschemaupdater_[sectionname]_transitions``,
+``_plone.app.transmogrifier.atschemaupdater_transitions``,
 ``_[sectionname]_transitions`` and ``_transitions``.
 
 Unicode paths are encoded to ASCII. Paths to objects are always interpreted as
@@ -44,17 +44,17 @@ executed in order, failing transitions are silently ignored.
 ...     printer
 ...     
 ... [workflowsource]
-... blueprint = plone.transmogrifier.tests.workflowsource
+... blueprint = plone.app.transmogrifier.tests.workflowsource
 ... 
 ... [workflowupdater]
-... blueprint = plone.transmogrifier.workflowupdater
+... blueprint = plone.app.transmogrifier.workflowupdater
 ... 
 ... [printer]
 ... blueprint = collective.transmogrifier.sections.tests.pprinter
 ... """
->>> registerConfig(u'plone.transmogrifier.tests.workflow',
+>>> registerConfig(u'plone.app.transmogrifier.tests.workflow',
 ...                workflow)
->>> transmogrifier(u'plone.transmogrifier.tests.workflow')
+>>> transmogrifier(u'plone.app.transmogrifier.tests.workflow')
 {'_transitions': 'spam', '_path': '/spam/eggs/foo'}
 {'_transitions': ('spam', 'eggs'), '_path': '/spam/eggs/baz'}
 {'_path': 'not/existing/bar',

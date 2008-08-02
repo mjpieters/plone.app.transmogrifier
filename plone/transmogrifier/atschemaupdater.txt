@@ -4,9 +4,10 @@ ATSchema updater section
 An AT schema updater pipeline section is another important transmogrifier
 content import pipeline element. It updates field values for Archetypes
 objects based on their schema based on the items it processes. The AT schema
-updater section blueprint name is ``plone.transmogrifier.atschemaupdater``. AT
-Schema updater sections operate on objects already present in the ZODB, be
-they created by a constructor or pre-existing objects.
+updater section blueprint name is
+``plone.app.transmogrifier.atschemaupdater``. AT Schema updater sections
+operate on objects already present in the ZODB, be they created by a
+constructor or pre-existing objects.
 
 Schema updating needs at least 1 piece of information: the path to the object
 to update. To determine the path, the schema updater section inspects each
@@ -15,9 +16,9 @@ information will be skipped. Similarly, items with a path that doesn't exist
 or are not Archetypes objects will be skipped as well.
 
 For the object path, it'll look (in order) for
-``_plone.transmogrifier.atschemaupdater_[sectionname]_path``,
-``_plone.transmogrifier.atschemaupdater_path``, ``_[sectionname]_path`` and
-``_path``, where ``[sectionname]`` is replaced with the name given to the
+``_plone.app.transmogrifier.atschemaupdater_[sectionname]_path``,
+``_plone.app.transmogrifier.atschemaupdater_path``, ``_[sectionname]_path``
+and ``_path``, where ``[sectionname]`` is replaced with the name given to the
 current section. This allows you to target the right section precisely if
 needed. Alternatively, you can specify what key to use for the path by
 specifying the ``path-key`` option, which should be a list of keys to try (one
@@ -37,16 +38,16 @@ the corresponding value, using the field's mutator.
 ...     printer
 ...     
 ... [schemasource]
-... blueprint = plone.transmogrifier.tests.schemasource
+... blueprint = plone.app.transmogrifier.tests.schemasource
 ... 
 ... [schemaupdater]
-... blueprint = plone.transmogrifier.atschemaupdater
+... blueprint = plone.app.transmogrifier.atschemaupdater
 ... 
 ... [printer]
 ... blueprint = collective.transmogrifier.sections.tests.pprinter
 ... """
->>> registerConfig(u'plone.transmogrifier.tests.atschema', atschema)
->>> transmogrifier(u'plone.transmogrifier.tests.atschema')
+>>> registerConfig(u'plone.app.transmogrifier.tests.atschema', atschema)
+>>> transmogrifier(u'plone.app.transmogrifier.tests.atschema')
 {'_path': '/spam/eggs/foo',
  'fieldnotchanged': 'nochange',
  'fieldone': 'one value',

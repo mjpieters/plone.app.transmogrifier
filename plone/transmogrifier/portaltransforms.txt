@@ -3,7 +3,7 @@ Portal Transforms section
 
 A portal transforms pipeline section lets you use Portal Transforms to
 transform item values. The portal transforms section blueprint name is
-``plone.transmogrifier.portaltransforms``.
+``plone.app.transmogrifier.portaltransforms``.
 
 What values to transform is determined by the ``keys`` option, which takes a
 set of newline-separated key names. If a key name starts with ``re:`` or
@@ -35,17 +35,17 @@ happening. The condition is evaluated for every matched key.
 ... encoding = utf8
 ... 
 ... [transform-id]
-... blueprint = plone.transmogrifier.portaltransforms
+... blueprint = plone.app.transmogrifier.portaltransforms
 ... transform = identity
 ... keys = id
 ...
 ... [transform-title]
-... blueprint = plone.transmogrifier.portaltransforms
+... blueprint = plone.app.transmogrifier.portaltransforms
 ... target = text/plain
 ... keys = title
 ... 
 ... [transform-status]
-... blueprint = plone.transmogrifier.portaltransforms
+... blueprint = plone.app.transmogrifier.portaltransforms
 ... from = text/plain
 ... target = text/plain
 ... keys = status
@@ -53,9 +53,9 @@ happening. The condition is evaluated for every matched key.
 ... [printer]
 ... blueprint = collective.transmogrifier.sections.tests.pprinter
 ... """
->>> registerConfig(u'plone.transmogrifier.tests.ptransforms',
+>>> registerConfig(u'plone.app.transmogrifier.tests.ptransforms',
 ...                ptransforms)
->>> transmogrifier(u'plone.transmogrifier.tests.ptransforms')
+>>> transmogrifier(u'plone.app.transmogrifier.tests.ptransforms')
 {'id': "Transformed 'foo' using the identity transform",
  'status': "Transformed '\\xe2\\x84\\x97' from text/plain to text/plain",
  'title': "Transformed 'The Foo Fighters \\xe2\\x84\\x97' to text/plain"}

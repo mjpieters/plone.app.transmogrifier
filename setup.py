@@ -24,7 +24,7 @@ long_description = ('\n'.join((
     
 open('doc.txt', 'w').write(long_description)
 
-name='plone.transmogrifier'
+name='plone.app.transmogrifier'
 setup(name=name,
       version=version,
       description="Plone blueprints for collective.transmogrifier pipelines",
@@ -42,7 +42,7 @@ setup(name=name,
       keywords='content import filtering plone',
       author='Jarn',
       author_email='info@jarn.com',
-      url='http://pypi.python.org/pypi/plone.transmogrifier',
+      url='http://pypi.python.org/pypi/plone.app.transmogrifier',
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['plone'],

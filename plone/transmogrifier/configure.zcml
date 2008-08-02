@@ -1,30 +1,30 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    i18n_domain="plone.transmogrifier">
+    i18n_domain="plone.app.transmogrifier">
 
 <utility
     component=".atschemaupdater.ATSchemaUpdaterSection"
-    name="plone.transmogrifier.atschemaupdater"
+    name="plone.app.transmogrifier.atschemaupdater"
     />
 
 <utility
     component=".workflowupdater.WorkflowUpdaterSection"
-    name="plone.transmogrifier.workflowupdater"
+    name="plone.app.transmogrifier.workflowupdater"
     />
 
 <utility
     component=".browserdefault.BrowserDefaultSection"
-    name="plone.transmogrifier.browserdefault"
+    name="plone.app.transmogrifier.browserdefault"
     />
 
 <utility
     component=".criteria.CriterionAdder"
-    name="plone.transmogrifier.criterionadder"
+    name="plone.app.transmogrifier.criterionadder"
     />
 
 <utility
     component=".portaltransforms.PortalTransformsSection"
-    name="plone.transmogrifier.portaltransforms"
+    name="plone.app.transmogrifier.portaltransforms"
     />
 
 </configure>

@@ -23,7 +23,7 @@ TODO
   transmogrifier import cases. The goal is to have a pipeline definition like
   this::
 
-    include = plone.transmogrifier.config:ploneimport.cfg
+    include = plone.app.transmogrifier.config:ploneimport.cfg
     pipeline =
         my.specific.import.section
         ${ploneimport:importpipeline}

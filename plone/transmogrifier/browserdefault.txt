@@ -11,17 +11,17 @@ Browser default section
 ...     printer
 ...     
 ... [browserdefaultsource]
-... blueprint = plone.transmogrifier.tests.browserdefaultsource
+... blueprint = plone.app.transmogrifier.tests.browserdefaultsource
 ... 
 ... [browserdefault]
-... blueprint = plone.transmogrifier.browserdefault
+... blueprint = plone.app.transmogrifier.browserdefault
 ... 
 ... [printer]
 ... blueprint = collective.transmogrifier.sections.tests.pprinter
 ... """
->>> registerConfig(u'plone.transmogrifier.tests.browserdefault',
+>>> registerConfig(u'plone.app.transmogrifier.tests.browserdefault',
 ...                browserdefault)
->>> transmogrifier(u'plone.transmogrifier.tests.browserdefault')
+>>> transmogrifier(u'plone.app.transmogrifier.tests.browserdefault')
 {'_layout': 'spam', '_path': '/spam/eggs/foo'}
 {'_defaultpage': 'eggs', '_path': '/spam/eggs/bar'}
 {'_layout': 'spam', '_defaultpage': 'eggs', '_path': '/spam/eggs/baz'}
