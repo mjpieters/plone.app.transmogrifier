@@ -59,6 +59,8 @@ def aTSchemaUpdaterSetUp(test):
         def get(self, ob):
             if self._last_field.endswith('notchanged'):
                 return 'nochange'
+            if self._last_field.endswith('unicode'):
+                return u'\xe5'.encode('utf8')
         
         updated = ()
         def set(self, ob, val):
@@ -88,7 +90,7 @@ def aTSchemaUpdaterSetUp(test):
             self.sample = (
                 dict(_path='/spam/eggs/foo', fieldone='one value', 
                      fieldtwo=2, nosuchfield='ignored',
-                     fieldnotchanged='nochange'),
+                     fieldnotchanged='nochange', fieldunicode=u'\xe5',),
                 dict(_path='not/existing/bar', fieldone='one value',
                      title='Should not be updated, not an existing path'),
                 dict(fieldone='one value',
