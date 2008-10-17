@@ -12,7 +12,7 @@ from Products.Archetypes.event import ObjectEditedEvent
 def _compare(fieldval, itemval):
     """Compare a AT Field value with an item value
     
-    Because at fields return utf8 instead of unicode and item values may be 
+    Because AT fields return utf8 instead of unicode and item values may be 
     unicode, and most of all because python tries to decode bytes when 
     comparing a str and a unicode value, we need to special-case this
     comparison. In case of a UnicodeDecodeError, fieldval being a str and
