@@ -10,11 +10,11 @@ long_description = ('\n'.join((
     read('README.txt'), ''
     'Detailed Documentation',
     '**********************', '',
-    read('plone', 'app', 'transmogrifier', 'atschemaupdater.txt'), '',
-    read('plone', 'app', 'transmogrifier', 'workflowupdater.txt'), '',
-    read('plone', 'app', 'transmogrifier', 'browserdefault.txt'), '',
-    read('plone', 'app', 'transmogrifier', 'criteria.txt'), '',
-    read('plone', 'app', 'transmogrifier', 'portaltransforms.txt'), '',
+    read('src', 'plone', 'app', 'transmogrifier', 'atschemaupdater.txt'), '',
+    read('src', 'plone', 'app', 'transmogrifier', 'workflowupdater.txt'), '',
+    read('src', 'plone', 'app', 'transmogrifier', 'browserdefault.txt'), '',
+    read('src', 'plone', 'app', 'transmogrifier', 'criteria.txt'), '',
+    read('src', 'plone', 'app', 'transmogrifier', 'portaltransforms.txt'), '',
 
     read('docs', 'HISTORY.txt'), '',
 
@@ -44,8 +44,9 @@ setup(name=name,
       author_email='info@jarn.com',
       url='http://pypi.python.org/pypi/plone.app.transmogrifier',
       license='GPL',
-      packages=find_packages(exclude=['ez_setup']),
+      packages=find_packages('src', exclude=['ez_setup']),
       namespace_packages=['plone', 'plone.app'],
+      package_dir = {'': 'src'},
       include_package_data=True,
       zip_safe=False,
       install_requires=[
