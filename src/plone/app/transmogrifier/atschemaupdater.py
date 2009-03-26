@@ -61,9 +61,12 @@ class ATSchemaUpdaterSection(object):
                 is_new_object = obj.checkCreationFlag()
                 for k,v in item.iteritems():
                     if k == '_type' and v in ['File', 'Image']:
-                        if not os.path.isfile(path):
+                        if not '_filepath' in item.keys():
                             continue
-                        file = open(path, 'rb')
+                        filepath = item['_filepath']
+                        if not os.path.isfile(filepath):
+                            continue
+                        file = open(filepath, 'rb')
                         data = file.read()
                         file.close()
                         if not data:
