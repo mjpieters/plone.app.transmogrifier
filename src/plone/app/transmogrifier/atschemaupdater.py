@@ -1,3 +1,5 @@
+import os
+import mimetypes
 from zope import event
 from zope.interface import classProvides, implements
 from collective.transmogrifier.interfaces import ISectionBlueprint
@@ -58,6 +60,19 @@ class ATSchemaUpdaterSection(object):
                 changed = False
                 is_new_object = obj.checkCreationFlag()
                 for k,v in item.iteritems():
+                    if k == '_type' and v in ['File', 'Image']:
+                        if not os.path.isfile(path):
+                            continue
+                        file = open(path, 'rb')
+                        data = file.read()
+                        file.close()
+                        if not data:
+                            continue
+                        field = v.lower()
+                        mutator = obj.getField(field).getMutator(obj)
+                        filename = path.rsplit('/')[-1]
+                        mimetype, encoding = mimetypes.guess_type(filename)
+                        mutator(data, filename=filename, mimetype=mimetype)
                     if k.startswith('_'):
                         continue
                     field = obj.getField(k)
