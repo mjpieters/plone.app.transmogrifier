@@ -15,8 +15,7 @@ TODO
 
   - URLNormalizer section to generate suitable ids.
 
-  - Clean up docs and tests for new sections from Florian (criteria, 
-    browserdefault)
+  - Clean up docs and tests for new sections from Florian (criteria)
 
 - Define a 'default import pipeline' variable in the transmogrifier section,
   so you can include a default set of sections that'll work for 95% of the
