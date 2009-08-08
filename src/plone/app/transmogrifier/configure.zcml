@@ -27,4 +27,9 @@
     name="plone.app.transmogrifier.portaltransforms"
     />
 
+<utility
+	component=".urlnormalizer.URLNormalizerSection"
+	name="plone.app.transmogrifier.urlnormalizer"
+	/>
+
 </configure>

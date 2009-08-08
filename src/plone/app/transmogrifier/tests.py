@@ -199,6 +199,46 @@ def browserDefaultSetUp(test):
     provideUtility(BrowserDefaultSource,
         name=u'plone.app.transmogrifier.tests.browserdefaultsource')
 
+def urlNormalizerSetUp(test):
+    sectionsSetUp(test)
+
+    from Products.CMFDynamicViewFTI.interface import ISelectableBrowserDefault
+    class MockPortal(object):
+        implements(ISelectableBrowserDefault)
+
+        _last_path = None
+        def unrestrictedTraverse(self, path, default):
+            if path[0] == '/':
+                return default # path is absolute
+            if isinstance(path, unicode):
+                return default
+            if path == 'not/existing/bar':
+                return default
+            self._last_path = path
+            return self
+
+        updated = ()
+
+    test.globs['plone'] = MockPortal()
+    test.globs['transmogrifier'].context = test.globs['plone']
+
+    class URLNormalizerSource(SampleSource):
+        classProvides(ISectionBlueprint)
+        implements(ISection)
+
+        def __init__(self, *args, **kw):
+            super(URLNormalizerSource, self).__init__(*args, **kw)
+            self.sample = (
+                dict(title='mytitle'),
+                dict(title='Is this a title of any sort?'),
+                dict(title='Put some <br /> $1llY V4LUES -- here&there'),
+                dict(title='What about \r\n line breaks (system)'),
+                dict(title='Try one of these --------- oh'),
+                dict(language='My language is de'),
+                dict(language='my language is en')
+            )
+    provideUtility(URLNormalizerSource,
+        name=u'plone.app.transmogrifier.tests.urlnormalizersource')
 
 def test_suite():
     return unittest.TestSuite((
@@ -214,4 +254,7 @@ def test_suite():
         doctest.DocFileSuite(
             'browserdefault.txt',
             setUp=browserDefaultSetUp, tearDown=tearDown),
+        doctest.DocFileSuite(
+            'urlnormalizer.txt',
+            setUp=urlNormalizerSetUp, tearDown=tearDown),
     ))
