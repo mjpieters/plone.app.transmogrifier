@@ -240,6 +240,47 @@ def urlNormalizerSetUp(test):
     provideUtility(URLNormalizerSource,
         name=u'plone.app.transmogrifier.tests.urlnormalizersource')
 
+def criteriaSetUp(test):
+    sectionsSetUp(test)
+
+    from Products.ATContentTypes.interface import IATTopic
+    class MockPortal(object):
+        implements(IATTopic)
+
+        _last_path = None
+        def unrestrictedTraverse(self, path, default):
+            if path[0] == '/':
+                return default # path is absolute
+            if isinstance(path, unicode):
+                return default
+            if path == 'not/existing/bar':
+                return default
+            self._last_path = path
+            return self
+
+        criteria = ()
+        def addCriterion(self, field, criterion):
+            self.criteria += ((self._last_path, field, criterion),)
+
+    test.globs['plone'] = MockPortal()
+    test.globs['transmogrifier'].context = test.globs['plone']
+
+    class CriteriaSource(SampleSource):
+        classProvides(ISectionBlueprint)
+        implements(ISection)
+
+        def __init__(self, *args, **kw):
+            super(CriteriaSource, self).__init__(*args, **kw)
+            self.sample = (
+                dict(_path='/spam/eggs/foo', _criterion='bar', _field='baz'),
+                dict(_path='not/existing/bar', _criterion='bar', _field='baz',
+                     title='Should not be updated, not an existing path'),
+                dict(_path='spam/eggs/incomplete',
+                     title='Should not be updated, no criterion or field'),
+            )
+    provideUtility(CriteriaSource,
+        name=u'plone.app.transmogrifier.tests.criteriasource')
+
 def test_suite():
     return unittest.TestSuite((
         doctest.DocFileSuite(
@@ -257,4 +298,6 @@ def test_suite():
         doctest.DocFileSuite(
             'urlnormalizer.txt',
             setUp=urlNormalizerSetUp, tearDown=tearDown),
+        doctest.DocFileSuite(
+            'criteria.txt', setUp=criteriaSetUp, tearDown=tearDown),
     ))

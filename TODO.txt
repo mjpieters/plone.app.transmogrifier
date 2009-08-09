@@ -13,8 +13,6 @@ TODO
     should take a mimetype key and a data key and replace these with the
     OFS.Image.File object.
 
-  - Clean up docs and tests for new sections from Florian (criteria)
-
 - Define a 'default import pipeline' variable in the transmogrifier section,
   so you can include a default set of sections that'll work for 95% of the
   transmogrifier import cases. The goal is to have a pipeline definition like
