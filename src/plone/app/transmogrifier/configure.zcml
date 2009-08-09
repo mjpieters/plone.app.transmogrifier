@@ -28,8 +28,8 @@
     />
 
 <utility
-	component=".urlnormalizer.URLNormalizerSection"
-	name="plone.app.transmogrifier.urlnormalizer"
-	/>
+    component=".urlnormalizer.URLNormalizerSection"
+    name="plone.app.transmogrifier.urlnormalizer"
+    />
 
 </configure>
