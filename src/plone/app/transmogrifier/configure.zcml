@@ -32,4 +32,9 @@
     name="plone.app.transmogrifier.urlnormalizer"
     />
 
+<utility
+    component=".mimeencapsulator.MimeEncapsulatorSection"
+    name="plone.app.transmogrifier.mimeencapsulator"
+    />
+
 </configure>

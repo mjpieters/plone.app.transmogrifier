@@ -16,6 +16,7 @@ long_description = ('\n'.join((
     read('src', 'plone', 'app', 'transmogrifier', 'criteria.txt'), '',
     read('src', 'plone', 'app', 'transmogrifier', 'portaltransforms.txt'), '',
     read('src', 'plone', 'app', 'transmogrifier', 'urlnormalizer.txt'), '',
+    read('src', 'plone', 'app', 'transmogrifier', 'mimeencapsulator.txt'), '',
 
     read('docs', 'HISTORY.txt'), '',
 

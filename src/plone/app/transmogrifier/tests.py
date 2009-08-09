@@ -281,6 +281,44 @@ def criteriaSetUp(test):
     provideUtility(CriteriaSource,
         name=u'plone.app.transmogrifier.tests.criteriasource')
 
+def mimeencapsulatorSetUp(test):
+    sectionsSetUp(test)
+
+    class EncapsulatorSource(SampleSource):
+        classProvides(ISectionBlueprint)
+        implements(ISection)
+
+        def __init__(self, *args, **kw):
+            super(EncapsulatorSource, self).__init__(*args, **kw)
+            self.sample = (
+                dict(_data='foobarbaz', _mimetype='application/x-test-data'),
+                dict(_mimetype='skip/nodata'),
+                dict(portrait='skip, no mimetypeset'),
+                dict(portrait='someportraitdata',
+                     _portrait_mimetype='image/jpeg'),
+            )
+    provideUtility(EncapsulatorSource,
+        name=u'plone.app.transmogrifier.tests.encapsulatorsource')
+
+    from OFS.Image import File
+    class OFSFilePrinter(object):
+        """Prints out data on any OFS.Image.File object in the item"""
+        classProvides(ISectionBlueprint)
+        implements(ISection)
+
+        def __init__(self, transmogrifier, name, options, previous):
+            self.previous = previous
+
+        def __iter__(self):
+            for item in self.previous:
+                for key, value in item.iteritems():
+                    if isinstance(value, File):
+                        print '%s: (%s) %s' % (
+                            key, value.content_type, str(value))
+                yield item
+    provideUtility(OFSFilePrinter,
+        name=u'plone.app.transmogrifier.tests.ofsfileprinter')
+
 def test_suite():
     return unittest.TestSuite((
         doctest.DocFileSuite(
@@ -300,4 +338,7 @@ def test_suite():
             setUp=urlNormalizerSetUp, tearDown=tearDown),
         doctest.DocFileSuite(
             'criteria.txt', setUp=criteriaSetUp, tearDown=tearDown),
+        doctest.DocFileSuite(
+            'mimeencapsulator.txt',
+            setUp=mimeencapsulatorSetUp, tearDown=tearDown),
     ))
