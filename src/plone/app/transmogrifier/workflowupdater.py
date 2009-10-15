@@ -6,6 +6,9 @@ from collective.transmogrifier.utils import defaultMatcher
 from Products.CMFCore.utils import getToolByName
 from Products.CMFCore.WorkflowCore import WorkflowException
 
+# XXX Weird things may happen if you have multiple workflows.
+# Needs investigating and solving //regebro
+            
 class WorkflowUpdaterSection(object):
     classProvides(ISectionBlueprint)
     implements(ISection)
