@@ -39,36 +39,36 @@ The defaultpage key will set the id of the default page that should be
 presented when the content object is loaded, and the layout key will set the
 id of the layout to use for the content item.
 
->>> import pprint
->>> browserdefault = """
-... [transmogrifier]
-... pipeline =
-...     browserdefaultsource
-...     browserdefault
-...     printer
-...     
-... [browserdefaultsource]
-... blueprint = plone.app.transmogrifier.tests.browserdefaultsource
-... 
-... [browserdefault]
-... blueprint = plone.app.transmogrifier.browserdefault
-... 
-... [printer]
-... blueprint = collective.transmogrifier.sections.tests.pprinter
-... """
->>> registerConfig(u'plone.app.transmogrifier.tests.browserdefault',
-...                browserdefault)
->>> transmogrifier(u'plone.app.transmogrifier.tests.browserdefault')
-{'_layout': 'spam', '_path': '/spam/eggs/foo'}
-{'_defaultpage': 'eggs', '_path': '/spam/eggs/bar'}
-{'_layout': 'spam', '_defaultpage': 'eggs', '_path': '/spam/eggs/baz'}
-{'_layout': 'spam',
- '_path': 'not/existing/bar',
- 'title': 'Should not be updated, not an existing path'}
-{'_path': 'spam/eggs/incomplete',
- 'title': 'Should not be updated, no layout or defaultpage'}
->>> pprint.pprint(plone.updated)
-(('spam/eggs/foo', 'layout', 'spam'),
- ('spam/eggs/bar', 'defaultpage', 'eggs'),
- ('spam/eggs/baz', 'layout', 'spam'),
- ('spam/eggs/baz', 'defaultpage', 'eggs'))
+    >>> import pprint
+    >>> browserdefault = """
+    ... [transmogrifier]
+    ... pipeline =
+    ...     browserdefaultsource
+    ...     browserdefault
+    ...     printer
+    ...     
+    ... [browserdefaultsource]
+    ... blueprint = plone.app.transmogrifier.tests.browserdefaultsource
+    ... 
+    ... [browserdefault]
+    ... blueprint = plone.app.transmogrifier.browserdefault
+    ... 
+    ... [printer]
+    ... blueprint = collective.transmogrifier.sections.tests.pprinter
+    ... """
+    >>> registerConfig(u'plone.app.transmogrifier.tests.browserdefault',
+    ...                browserdefault)
+    >>> transmogrifier(u'plone.app.transmogrifier.tests.browserdefault')
+    [('_layout', 'spam'), ('_path', '/spam/eggs/foo')]
+    [('_defaultpage', 'eggs'), ('_path', '/spam/eggs/bar')]
+    [('_defaultpage', 'eggs'), ('_layout', 'spam'), ('_path', '/spam/eggs/baz')]
+    [('_layout', 'spam'),
+     ('_path', 'not/existing/bar'),
+     ('title', 'Should not be updated, not an existing path')]
+    [('_path', 'spam/eggs/incomplete'),
+     ('title', 'Should not be updated, no layout or defaultpage')]
+    >>> pprint.pprint(plone.updated)
+    (('spam/eggs/foo', 'layout', 'spam'),
+     ('spam/eggs/bar', 'defaultpage', 'eggs'),
+     ('spam/eggs/baz', 'layout', 'spam'),
+     ('spam/eggs/baz', 'defaultpage', 'eggs'))

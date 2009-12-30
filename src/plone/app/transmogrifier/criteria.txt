@@ -28,31 +28,33 @@ which should be a list of keys to try (one key per line, use a ``re:`` or
 Paths to objects are always interpreted as relative to the context, and must
 resolve to IATTopic classes. 
 
->>> import pprint
->>> criteria = """
-... [transmogrifier]
-... pipeline =
-...     criteriasource
-...     criterionadder
-...     printer
-...     
-... [criteriasource]
-... blueprint = plone.app.transmogrifier.tests.criteriasource
-... 
-... [criterionadder]
-... blueprint = plone.app.transmogrifier.criterionadder
-... 
-... [printer]
-... blueprint = collective.transmogrifier.sections.tests.pprinter
-... """
->>> registerConfig(u'plone.app.transmogrifier.tests.criteria', criteria)
->>> transmogrifier(u'plone.app.transmogrifier.tests.criteria')
-{'_criterion': 'bar', '_field': 'baz', '_path': '/spam/eggs/foo/crit__baz_bar'}
-{'_criterion': 'bar',
- '_field': 'baz',
- '_path': 'not/existing/bar',
- 'title': 'Should not be updated, not an existing path'}
-{'_path': 'spam/eggs/incomplete',
- 'title': 'Should not be updated, no criterion or field'}
->>> pprint.pprint(plone.criteria)
-(('spam/eggs/foo', 'baz', 'bar'),)
+    >>> import pprint
+    >>> criteria = """
+    ... [transmogrifier]
+    ... pipeline =
+    ...     criteriasource
+    ...     criterionadder
+    ...     printer
+    ...     
+    ... [criteriasource]
+    ... blueprint = plone.app.transmogrifier.tests.criteriasource
+    ... 
+    ... [criterionadder]
+    ... blueprint = plone.app.transmogrifier.criterionadder
+    ... 
+    ... [printer]
+    ... blueprint = collective.transmogrifier.sections.tests.pprinter
+    ... """
+    >>> registerConfig(u'plone.app.transmogrifier.tests.criteria', criteria)
+    >>> transmogrifier(u'plone.app.transmogrifier.tests.criteria')
+    [('_criterion', 'bar'),
+     ('_field', 'baz'),
+     ('_path', '/spam/eggs/foo/crit__baz_bar')]
+    [('_criterion', 'bar'),
+     ('_field', 'baz'),
+     ('_path', 'not/existing/bar'),
+     ('title', 'Should not be updated, not an existing path')]
+    [('_path', 'spam/eggs/incomplete'),
+     ('title', 'Should not be updated, no criterion or field')]
+    >>> pprint.pprint(plone.criteria)
+    (('spam/eggs/foo', 'baz', 'bar'),)

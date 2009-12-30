@@ -29,37 +29,39 @@ Paths to objects are always interpreted as relative to the context. Any
 writable field who's id matches a key in the current item will be updated with
 the corresponding value, using the field's mutator.
 
->>> import pprint
->>> atschema = """
-... [transmogrifier]
-... pipeline =
-...     schemasource
-...     schemaupdater
-...     printer
-...     
-... [schemasource]
-... blueprint = plone.app.transmogrifier.tests.schemasource
-... 
-... [schemaupdater]
-... blueprint = plone.app.transmogrifier.atschemaupdater
-... 
-... [printer]
-... blueprint = collective.transmogrifier.sections.tests.pprinter
-... """
->>> registerConfig(u'plone.app.transmogrifier.tests.atschema', atschema)
->>> transmogrifier(u'plone.app.transmogrifier.tests.atschema')
-{'_path': '/spam/eggs/foo',
- 'fieldnotchanged': 'nochange',
- 'fieldone': 'one value',
- 'fieldtwo': 2,
- 'fieldunicode': u'\xe5',
- 'nosuchfield': 'ignored'}
-{'_path': 'not/existing/bar',
- 'fieldone': 'one value',
- 'title': 'Should not be updated, not an existing path'}
-{'fieldone': 'one value', 'title': 'Should not be updated, no path'}
-{'_path': '/spam/eggs/notatcontent',
- 'fieldtwo': 2,
- 'title': 'Should not be updated, not an AT base object'}
->>> pprint.pprint(plone.updated)
-(('spam/eggs/foo', 'fieldone', 'one value'), ('spam/eggs/foo', 'fieldtwo', 2))
+    >>> import pprint
+    >>> atschema = """
+    ... [transmogrifier]
+    ... pipeline =
+    ...     schemasource
+    ...     schemaupdater
+    ...     printer
+    ...     
+    ... [schemasource]
+    ... blueprint = plone.app.transmogrifier.tests.schemasource
+    ... 
+    ... [schemaupdater]
+    ... blueprint = plone.app.transmogrifier.atschemaupdater
+    ... 
+    ... [printer]
+    ... blueprint = collective.transmogrifier.sections.tests.pprinter
+    ... """
+    >>> registerConfig(u'plone.app.transmogrifier.tests.atschema', atschema)
+    >>> transmogrifier(u'plone.app.transmogrifier.tests.atschema')
+    [('_path', '/spam/eggs/foo'),
+     ('fieldnotchanged', 'nochange'),
+     ('fieldone', 'one value'),
+     ('fieldtwo', 2),
+     ('fieldunicode', u'\xe5'),
+     ('nosuchfield', 'ignored')]
+    [('_path', 'not/existing/bar'),
+     ('fieldone', 'one value'),
+     ('title', 'Should not be updated, not an existing path')]
+    [('fieldone', 'one value'), ('title', 'Should not be updated, no path')]
+    [('_path', '/spam/eggs/notatcontent'),
+     ('fieldtwo', 2),
+     ('title', 'Should not be updated, not an AT base object')]
+    >>> pprint.pprint(plone.updated)
+    (('spam/eggs/foo', 'fieldone', 'one value'),
+     ('spam/eggs/foo', 'fieldunicode', u'\xe5'),
+     ('spam/eggs/foo', 'fieldtwo', 2))

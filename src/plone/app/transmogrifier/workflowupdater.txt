@@ -35,37 +35,37 @@ relative to the context object. Transitions are specified as a sequence of
 transition names, or as a string specifying one transition. Transitions are
 executed in order, failing transitions are silently ignored.
 
->>> import pprint
->>> workflow = """
-... [transmogrifier]
-... pipeline =
-...     workflowsource
-...     workflowupdater
-...     printer
-...     
-... [workflowsource]
-... blueprint = plone.app.transmogrifier.tests.workflowsource
-... 
-... [workflowupdater]
-... blueprint = plone.app.transmogrifier.workflowupdater
-... 
-... [printer]
-... blueprint = collective.transmogrifier.sections.tests.pprinter
-... """
->>> registerConfig(u'plone.app.transmogrifier.tests.workflow',
-...                workflow)
->>> transmogrifier(u'plone.app.transmogrifier.tests.workflow')
-{'_transitions': 'spam', '_path': '/spam/eggs/foo'}
-{'_transitions': ('spam', 'eggs'), '_path': '/spam/eggs/baz'}
-{'_path': 'not/existing/bar',
- '_transitions': ('spam', 'eggs'),
- 'title': 'Should not be updated, not an existing path'}
-{'_path': 'spam/eggs/incomplete',
- 'title': 'Should not be updated, no transitions'}
-{'_path': '/spam/eggs/nosuchtransition',
- '_transitions': ('nonsuch',),
- 'title': 'Should not be updated, no such transition'}
->>> pprint.pprint(plone.updated)
-(('spam/eggs/foo', 'spam'),
- ('spam/eggs/baz', 'spam'),
- ('spam/eggs/baz', 'eggs'))
+    >>> import pprint
+    >>> workflow = """
+    ... [transmogrifier]
+    ... pipeline =
+    ...     workflowsource
+    ...     workflowupdater
+    ...     printer
+    ...     
+    ... [workflowsource]
+    ... blueprint = plone.app.transmogrifier.tests.workflowsource
+    ... 
+    ... [workflowupdater]
+    ... blueprint = plone.app.transmogrifier.workflowupdater
+    ... 
+    ... [printer]
+    ... blueprint = collective.transmogrifier.sections.tests.pprinter
+    ... """
+    >>> registerConfig(u'plone.app.transmogrifier.tests.workflow',
+    ...                workflow)
+    >>> transmogrifier(u'plone.app.transmogrifier.tests.workflow')
+    [('_path', '/spam/eggs/foo'), ('_transitions', 'spam')]
+    [('_path', '/spam/eggs/baz'), ('_transitions', ('spam', 'eggs'))]
+    [('_path', 'not/existing/bar'),
+     ('_transitions', ('spam', 'eggs')),
+     ('title', 'Should not be updated, not an existing path')]
+    [('_path', 'spam/eggs/incomplete'),
+     ('title', 'Should not be updated, no transitions')]
+    [('_path', '/spam/eggs/nosuchtransition'),
+     ('_transitions', ('nonsuch',)),
+     ('title', 'Should not be updated, no such transition')]
+    >>> pprint.pprint(plone.updated)
+    (('spam/eggs/foo', 'spam'),
+     ('spam/eggs/baz', 'spam'),
+     ('spam/eggs/baz', 'eggs'))
