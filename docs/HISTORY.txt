@@ -6,6 +6,9 @@ Change History
 1.1 (unreleased)
 ================
 
+- Added UID updated section. See uidupdater.txt.
+  [optilude]
+
 - Fixed tests for Plone 4, in the same way that they were fixed in
   collective.transmogrifier.
   [optilude]

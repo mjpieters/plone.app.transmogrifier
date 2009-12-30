@@ -37,4 +37,10 @@
     name="plone.app.transmogrifier.mimeencapsulator"
     />
 
+<utility
+    component=".uidupdater.UIDUpdaterSection"
+    name="plone.app.transmogrifier.uidupdater"
+    />
+
+
 </configure>

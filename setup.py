@@ -11,6 +11,7 @@ long_description = ('\n'.join((
     'Detailed Documentation',
     '**********************', '',
     read('src', 'plone', 'app', 'transmogrifier', 'atschemaupdater.txt'), '',
+    read('src', 'plone', 'app', 'transmogrifier', 'uidupdater.txt'), '',
     read('src', 'plone', 'app', 'transmogrifier', 'workflowupdater.txt'), '',
     read('src', 'plone', 'app', 'transmogrifier', 'browserdefault.txt'), '',
     read('src', 'plone', 'app', 'transmogrifier', 'criteria.txt'), '',

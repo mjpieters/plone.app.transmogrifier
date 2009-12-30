@@ -319,6 +319,64 @@ def mimeencapsulatorSetUp(test):
     provideUtility(OFSFilePrinter,
         name=u'plone.app.transmogrifier.tests.ofsfileprinter')
 
+def uidSetUp(test):
+    sectionsSetUp(test)
+    
+    from Products.Archetypes.interfaces import IReferenceable
+    
+    class MockReferenceableObject(object):
+        implements(IReferenceable)
+        
+        def __init__(self, path, portal):
+            self.path = path
+            self.portal = portal
+        
+        _at_uid = 'xyz'
+        def UID(self):
+            return self._at_uid
+        
+        def _setUID(self, uid):
+            self.portal.uids_set.append((self.path, uid))
+            self._at_uid = uid
+    
+    class MockPortal(object):
+        implements(IReferenceable)
+        
+        _last_path = None
+        def unrestrictedTraverse(self, path, default):
+            if path[0] == '/':
+                return default # path is absolute
+            if isinstance(path, unicode):
+                return default
+            if path == 'not/existing/bar':
+                return default
+            if path.endswith('/notatcontent'):
+                return object()
+            return MockReferenceableObject(path, self)
+        
+        uids_set = []
+    
+    test.globs['plone'] = MockPortal()
+    test.globs['transmogrifier'].context = test.globs['plone']
+    
+    class UIDSource(SampleSource):
+        classProvides(ISectionBlueprint)
+        implements(ISection)
+        
+        def __init__(self, *args, **kw):
+            super(UIDSource, self).__init__(*args, **kw)
+            self.sample = (
+                dict(_path='/spam/eggs/foo',     _uid='abc',), # will be set
+                dict(_path='/spam/eggs/bar',     _uid='xyz',), # same as default
+                dict(_path='not/existing/bar',   _uid='def',), # not found
+                dict(                            _uid='geh',), # no path
+                dict(_path='/spam/eggs/baz',                ), # no uid
+                dict(_path='/spam/notatcontent', _uid='ijk',), # not referenceable
+            )
+    provideUtility(UIDSource,
+        name=u'plone.app.transmogrifier.tests.uidsource')
+
+
 def test_suite():
     return unittest.TestSuite((
         doctest.DocFileSuite(
@@ -327,6 +385,9 @@ def test_suite():
         doctest.DocFileSuite(
             'atschemaupdater.txt',
             setUp=aTSchemaUpdaterSetUp, tearDown=tearDown),
+        doctest.DocFileSuite(
+            'uidupdater.txt',
+            setUp=uidSetUp, tearDown=tearDown),
         doctest.DocFileSuite(
             'workflowupdater.txt',
             setUp=workflowUpdaterSetUp, tearDown=tearDown),
@@ -340,5 +401,5 @@ def test_suite():
             'criteria.txt', setUp=criteriaSetUp, tearDown=tearDown),
         doctest.DocFileSuite(
             'mimeencapsulator.txt',
-            setUp=mimeencapsulatorSetUp, tearDown=tearDown),
+            setUp=mimeencapsulatorSetUp, tearDown=tearDown),        
     ))
