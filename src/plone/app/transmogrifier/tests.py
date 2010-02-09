@@ -444,15 +444,15 @@ def userConstructorSetup(test):
         added_users = ()
         added_member_areas = ()
 
-        def getMemberById(self, username):
-            if username == 'existing_user':
+        def getMemberById(self, userid):
+            if userid == 'existing_user':
                 return object()
             return None
 
-        def addMember(self, username, password, roles, domains,
+        def addMember(self, userid, password, roles, domains,
                       properties=None):
             props = ', '.join([properties[pp] for pp in properties])
-            user = '%s with roles %s: %s' % (username, roles, props)
+            user = '%s with roles %s: %s' % (userid, roles, props)
             self.added_users += (user,)
             return
 
@@ -470,27 +470,27 @@ def userConstructorSetup(test):
             super(UserConstructorSource, self).__init__(*args, **kw)
             self.sample = (
                 # will be added
-                dict(_username ='foo', _password='foopwd', _email='foo@foo.com',
+                dict(_userid ='foo', _password='foopwd', _email='foo@foo.com',
                      _fullname='Foo', _roles='Member'),
                 # will be added
-                dict(_username ='bar', _password='barpwd', _email='bar@bar.com',
+                dict(_userid ='bar', _password='barpwd', _email='bar@bar.com',
                      _fullname='Bar', _roles=('Member',)),
                 # will be added
-                dict(_username ='admin', _password='adm', _email='adm@adm.com',
+                dict(_userid ='admin', _password='adm', _email='adm@adm.com',
                      _fullname='Administrator', _roles=('Member', 'Manager')),
                 # will be added, with a member area
-                dict(_username ='with_member_area', _password='pwd',
+                dict(_userid ='with_member_area', _password='pwd',
                      _email='member@area.com', _fullname='User',
                      _roles='Member'),
                 # not enought infos
-                dict(_username ='baduser'),
+                dict(_userid ='baduser'),
                 # missing fullname
-                dict(_username ='baduser2', _password='bad', _email='bad@bad.com',
+                dict(_userid ='baduser2', _password='bad', _email='bad@bad.com',
                      _roles='Member'),
                 # not enought infos
-                dict(_username ='baduser'),
+                dict(_userid ='baduser'),
                 # existing user, will not be created or updated
-                dict(_username ='existing_user', _password='pwd',
+                dict(_userid ='existing_user', _password='pwd',
                      _email='existing@user.com', _fullname='Existing User',
                      _roles='Member'),
             )

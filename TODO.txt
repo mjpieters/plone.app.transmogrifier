@@ -28,7 +28,7 @@ TODO
   this blueprint into two independent blueprints:
 
     - userconstructor which is responsible for create a user with the couple
-      username/password.
+      userid/password.
 
     - userpropertiesupdater which is responsible to update the member's properties.
 

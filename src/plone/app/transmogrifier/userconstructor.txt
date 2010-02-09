@@ -6,10 +6,10 @@ A UserConstructor section allows you to add users to the portal.
 The UserConstructor blueprint name is ``plone.app.transmogrifier.userconstructor``.
 
 To determine the user informations, the UserConstructor section inspects each
-item and looks for the keys username, password, email, fullname and roles, as
+item and looks for the keys userid, password, email, fullname and roles, as
 described below. Any item missing one of these keys will be skipped.
 Similarly, items will be skipped if a user already exist in the portal (with the
-same username).
+same userid).
 
 For each key, the corresponding information will be found among the following:
 
@@ -19,7 +19,7 @@ For each key, the corresponding information will be found among the following:
 * ``_[key]``
 
 where ``[sectionname]`` is replaced with the name given to the current section,
-and ``[key]`` is replaced by ``username``, ``password``, ``email``, ``fullname``
+and ``[key]`` is replaced by ``userid``, ``password``, ``email``, ``fullname``
 or ``roles``. This allows you to target the right section precisely if needed.
 
 Alternatively, you can specify what key to use for each information by
@@ -45,7 +45,7 @@ the user in /Members. By default member areas are not created.
     ...
     ... [userconstructor]
     ... blueprint = plone.app.transmogrifier.userconstructor
-    ... create-member-area=python:item.get('_username', '')=='with_member_area'
+    ... create-member-area=python:item.get('_userid', '')=='with_member_area'
     ...
     ... [printer]
     ... blueprint = collective.transmogrifier.sections.tests.pprinter
@@ -58,33 +58,33 @@ the user in /Members. By default member areas are not created.
      ('_fullname', 'Foo'),
      ('_password', 'foopwd'),
      ('_roles', 'Member'),
-     ('_username', 'foo')]
+     ('_userid', 'foo')]
     [('_email', 'bar@bar.com'),
      ('_fullname', 'Bar'),
      ('_password', 'barpwd'),
      ('_roles', ('Member',)),
-     ('_username', 'bar')]
+     ('_userid', 'bar')]
     [('_email', 'adm@adm.com'),
      ('_fullname', 'Administrator'),
      ('_password', 'adm'),
      ('_roles', ('Member', 'Manager')),
-     ('_username', 'admin')]
+     ('_userid', 'admin')]
     [('_email', 'member@area.com'),
      ('_fullname', 'User'),
      ('_password', 'pwd'),
      ('_roles', 'Member'),
-     ('_username', 'with_member_area')]
-    [('_username', 'baduser')]
+     ('_userid', 'with_member_area')]
+    [('_userid', 'baduser')]
     [('_email', 'bad@bad.com'),
      ('_password', 'bad'),
      ('_roles', 'Member'),
-     ('_username', 'baduser2')]
-    [('_username', 'baduser')]
+     ('_userid', 'baduser2')]
+    [('_userid', 'baduser')]
     [('_email', 'existing@user.com'),
      ('_fullname', 'Existing User'),
      ('_password', 'pwd'),
      ('_roles', 'Member'),
-     ('_username', 'existing_user')]
+     ('_userid', 'existing_user')]
 
     >>> pprint.pprint(plone.added_users)
     ("foo with roles ('Member',): Foo, foo@foo.com",

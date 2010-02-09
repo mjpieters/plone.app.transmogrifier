@@ -18,8 +18,8 @@ class UserConstructorSection(object):
                                                       'python:False'),
                                           transmogrifier, name, options)
 
-        self.usernamekey = defaultMatcher(options, 'username-key',
-                                          name, key='username')
+        self.useridkey = defaultMatcher(options, 'userid-key',
+                                          name, key='userid')
         self.passwordkey = defaultMatcher(options, 'password-key',
                                           name, key='password')
         self.emailkey = defaultMatcher(options, 'email-key',
@@ -35,18 +35,18 @@ class UserConstructorSection(object):
 
         for item in self.previous:
 
-            usernamekey = self.usernamekey(*item.keys())[0]
+            useridkey = self.useridkey(*item.keys())[0]
             passwordkey = self.passwordkey(*item.keys())[0]
             emailkey = self.emailkey(*item.keys())[0]
             fullnamekey = self.fullnamekey(*item.keys())[0]
             roleskey = self.roleskey(*item.keys())[0]
 
-            if (usernamekey and passwordkey and emailkey and fullnamekey \
+            if (useridkey and passwordkey and emailkey and fullnamekey \
                 and roleskey) is None:
                 yield item; continue # not enough infos
 
-            username = item[usernamekey]
-            if pm.getMemberById(username) is not None:
+            userid = item[useridkey]
+            if pm.getMemberById(userid) is not None:
                 yield item; continue # existing user
 
             password = item[passwordkey]
@@ -57,12 +57,12 @@ class UserConstructorSection(object):
                 roles = (roles,)
 
             # add the user
-            pm.addMember(username, password, roles, [],
+            pm.addMember(userid, password, roles, [],
                          properties={"email": email, "fullname": fullname})
 
             # add his member area
             if self.createMemberArea(item):
-                pm.createMemberArea(member_id=username)
+                pm.createMemberArea(member_id=userid)
 
             yield item
 
