@@ -45,7 +45,8 @@ Paths to objects are always interpreted as relative to the context.
     ... [printer]
     ... blueprint = collective.transmogrifier.sections.tests.pprinter
     ... """
-    >>> registerConfig(u'plone.app.transmogrifier.tests.reindexobject', reindexobject)
+    >>> registerConfig(u'plone.app.transmogrifier.tests.reindexobject',
+    ...                reindexobject)
 
     >>> transmogrifier(u'plone.app.transmogrifier.tests.reindexobject')
     [('_path', '/spam/eggs/foo')]

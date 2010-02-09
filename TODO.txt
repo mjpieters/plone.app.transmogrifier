@@ -20,3 +20,16 @@ TODO
 
   With a black box section that could even be done without variable
   substitution.
+
+- Improve userconstructor section:
+
+  plone.app.transmogrifier.userconstructor is very simple, it allows to create
+  a user and set his full name and email. A better approach might be to split
+  this blueprint into two independent blueprints:
+
+    - userconstructor which is responsible for create a user with the couple
+      username/password.
+
+    - userpropertiesupdater which is responsible to update the member's properties.
+
+

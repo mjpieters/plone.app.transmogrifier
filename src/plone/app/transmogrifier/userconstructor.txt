@@ -1,0 +1,96 @@
+UserConstructor section
+==========================
+
+A UserConstructor section allows you to add users to the portal.
+
+The UserConstructor blueprint name is ``plone.app.transmogrifier.userconstructor``.
+
+To determine the user informations, the UserConstructor section inspects each
+item and looks for the keys username, password, email, fullname and roles, as
+described below. Any item missing one of these keys will be skipped.
+Similarly, items will be skipped if a user already exist in the portal (with the
+same username).
+
+For each key, the corresponding information will be found among the following:
+
+* ``_plone.app.transmogrifier.userconstructor_[sectionname]_[key]``
+* ``_plone.app.transmogrifier.userconstructor_[key]``
+* ``_[sectionname]_[key]``
+* ``_[key]``
+
+where ``[sectionname]`` is replaced with the name given to the current section,
+and ``[key]`` is replaced by ``username``, ``password``, ``email``, ``fullname``
+or ``roles``. This allows you to target the right section precisely if needed.
+
+Alternatively, you can specify what key to use for each information by
+specifying the``[key]-key`` option, which should be a list of keys to try (one
+key per line; use a ``re:`` or ``regexp:`` prefix to specify regular
+expressions).
+
+Optionally, you can specify a ``create-member-area`` option, a TALES expression
+that when evaluating to ``True``, causes the section to create a member area for
+the user in /Members. By default member areas are not created.
+
+    >>> import pprint
+
+    >>> userconstructor = """
+    ... [transmogrifier]
+    ... pipeline =
+    ...     source
+    ...     userconstructor
+    ...     printer
+    ...
+    ... [source]
+    ... blueprint = plone.app.transmogrifier.tests.userconstructorsource
+    ...
+    ... [userconstructor]
+    ... blueprint = plone.app.transmogrifier.userconstructor
+    ... create-member-area=python:item.get('_username', '')=='with_member_area'
+    ...
+    ... [printer]
+    ... blueprint = collective.transmogrifier.sections.tests.pprinter
+    ... """
+    >>> registerConfig(u'plone.app.transmogrifier.tests.userconstructor',
+    ...                userconstructor)
+
+    >>> transmogrifier(u'plone.app.transmogrifier.tests.userconstructor')
+    [('_email', 'foo@foo.com'),
+     ('_fullname', 'Foo'),
+     ('_password', 'foopwd'),
+     ('_roles', 'Member'),
+     ('_username', 'foo')]
+    [('_email', 'bar@bar.com'),
+     ('_fullname', 'Bar'),
+     ('_password', 'barpwd'),
+     ('_roles', ('Member',)),
+     ('_username', 'bar')]
+    [('_email', 'adm@adm.com'),
+     ('_fullname', 'Administrator'),
+     ('_password', 'adm'),
+     ('_roles', ('Member', 'Manager')),
+     ('_username', 'admin')]
+    [('_email', 'member@area.com'),
+     ('_fullname', 'User'),
+     ('_password', 'pwd'),
+     ('_roles', 'Member'),
+     ('_username', 'with_member_area')]
+    [('_username', 'baduser')]
+    [('_email', 'bad@bad.com'),
+     ('_password', 'bad'),
+     ('_roles', 'Member'),
+     ('_username', 'baduser2')]
+    [('_username', 'baduser')]
+    [('_email', 'existing@user.com'),
+     ('_fullname', 'Existing User'),
+     ('_password', 'pwd'),
+     ('_roles', 'Member'),
+     ('_username', 'existing_user')]
+
+    >>> pprint.pprint(plone.added_users)
+    ("foo with roles ('Member',): Foo, foo@foo.com",
+     "bar with roles ('Member',): Bar, bar@bar.com",
+     "admin with roles ('Member', 'Manager'): Administrator, adm@adm.com",
+     "with_member_area with roles ('Member',): User, member@area.com")
+
+    >>> pprint.pprint(plone.added_member_areas)
+    ('/Members/with_member_area',)

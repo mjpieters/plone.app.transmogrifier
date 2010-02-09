@@ -6,6 +6,9 @@ Change History
 1.1 (unreleased)
 ================
 
+- Added UserConstructor section. See userconstructor.txt.
+  [sylvainb]
+
 - Added Indexing section. See reindexobject.txt.
   [sylvainb]
 

@@ -376,7 +376,6 @@ def uidSetUp(test):
     provideUtility(UIDSource,
         name=u'plone.app.transmogrifier.tests.uidsource')
 
-
 def reindexObjectSetup(test):
     sectionsSetUp(test)
 
@@ -430,6 +429,74 @@ def reindexObjectSetup(test):
     provideUtility(ReindexObjectSource,
         name=u'plone.app.transmogrifier.tests.reindexobjectsource')
 
+def userConstructorSetup(test):
+    sectionsSetUp(test)
+
+    from Products.Archetypes.interfaces import IBaseObject
+
+    class MockPortal(object):
+        implements(IBaseObject)
+
+        @property
+        def portal_membership(self):
+            return self
+
+        added_users = ()
+        added_member_areas = ()
+
+        def getMemberById(self, username):
+            if username == 'existing_user':
+                return object()
+            return None
+
+        def addMember(self, username, password, roles, domains,
+                      properties=None):
+            props = ', '.join([properties[pp] for pp in properties])
+            user = '%s with roles %s: %s' % (username, roles, props)
+            self.added_users += (user,)
+            return
+
+        def createMemberArea(self, member_id):
+            self.added_member_areas += (('/Members/%s' % member_id),)
+
+    test.globs['plone'] = MockPortal()
+    test.globs['transmogrifier'].context = test.globs['plone']
+
+    class UserConstructorSource(SampleSource):
+        classProvides(ISectionBlueprint)
+        implements(ISection)
+
+        def __init__(self, *args, **kw):
+            super(UserConstructorSource, self).__init__(*args, **kw)
+            self.sample = (
+                # will be added
+                dict(_username ='foo', _password='foopwd', _email='foo@foo.com',
+                     _fullname='Foo', _roles='Member'),
+                # will be added
+                dict(_username ='bar', _password='barpwd', _email='bar@bar.com',
+                     _fullname='Bar', _roles=('Member',)),
+                # will be added
+                dict(_username ='admin', _password='adm', _email='adm@adm.com',
+                     _fullname='Administrator', _roles=('Member', 'Manager')),
+                # will be added, with a member area
+                dict(_username ='with_member_area', _password='pwd',
+                     _email='member@area.com', _fullname='User',
+                     _roles='Member'),
+                # not enought infos
+                dict(_username ='baduser'),
+                # missing fullname
+                dict(_username ='baduser2', _password='bad', _email='bad@bad.com',
+                     _roles='Member'),
+                # not enought infos
+                dict(_username ='baduser'),
+                # existing user, will not be created or updated
+                dict(_username ='existing_user', _password='pwd',
+                     _email='existing@user.com', _fullname='Existing User',
+                     _roles='Member'),
+            )
+    provideUtility(UserConstructorSource,
+        name=u'plone.app.transmogrifier.tests.userconstructorsource')
+
 def test_suite():
     return unittest.TestSuite((
         doctest.DocFileSuite(
@@ -458,4 +525,7 @@ def test_suite():
         doctest.DocFileSuite(
             'reindexobject.txt',
             setUp=reindexObjectSetup, tearDown=tearDown),
+        doctest.DocFileSuite(
+            'userconstructor.txt',
+            setUp=userConstructorSetup, tearDown=tearDown),
     ))
