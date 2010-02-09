@@ -42,5 +42,9 @@
     name="plone.app.transmogrifier.uidupdater"
     />
 
+<utility
+    component=".reindexobject.ReindexObjectSection"
+    name="plone.app.transmogrifier.reindexobject"
+    />
 
 </configure>

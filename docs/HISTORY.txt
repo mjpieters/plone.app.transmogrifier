@@ -6,6 +6,9 @@ Change History
 1.1 (unreleased)
 ================
 
+- Added Indexing section. See reindexobject.txt.
+  [sylvainb]
+
 - Added UID updated section. See uidupdater.txt.
   [optilude]
 

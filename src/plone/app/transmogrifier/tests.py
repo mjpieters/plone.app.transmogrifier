@@ -18,7 +18,7 @@ def sectionsSetUp(test):
 
 def portalTransformsSetUp(test):
     sectionsSetUp(test)
-    
+
     class MockPortalTransforms(object):
         def __call__(self, transform, data):
             return 'Transformed %r using the %s transform' % (data, transform)
@@ -32,11 +32,11 @@ def portalTransformsSetUp(test):
 
 def aTSchemaUpdaterSetUp(test):
     sectionsSetUp(test)
-    
+
     from Products.Archetypes.interfaces import IBaseObject
     class MockPortal(object):
         implements(IBaseObject)
-        
+
         _last_path = None
         def unrestrictedTraverse(self, path, default):
             if path[0] == '/':
@@ -49,46 +49,46 @@ def aTSchemaUpdaterSetUp(test):
                 return object()
             self._last_path = path
             return self
-        
+
         _last_field = None
         def getField(self, name):
             if name.startswith('field'):
                 self._last_field = name
                 return self
-        
+
         def get(self, ob):
             if self._last_field.endswith('notchanged'):
                 return 'nochange'
             if self._last_field.endswith('unicode'):
                 return u'\xe5'.encode('utf8')
-        
+
         updated = ()
         def set(self, ob, val):
             self.updated += ((self._last_path, self._last_field, val),)
-        
+
         def checkCreationFlag(self):
             return len(self.updated) % 2
-        
+
         def unmarkCreationFlag(self):
             pass
-        
+
         def at_post_create_script(self):
             pass
-        
+
         def at_post_edit_script(self):
             pass
-    
+
     test.globs['plone'] = MockPortal()
     test.globs['transmogrifier'].context = test.globs['plone']
-    
+
     class SchemaSource(SampleSource):
         classProvides(ISectionBlueprint)
         implements(ISection)
-        
+
         def __init__(self, *args, **kw):
             super(SchemaSource, self).__init__(*args, **kw)
             self.sample = (
-                dict(_path='/spam/eggs/foo', fieldone='one value', 
+                dict(_path='/spam/eggs/foo', fieldone='one value',
                      fieldtwo=2, nosuchfield='ignored',
                      fieldnotchanged='nochange', fieldunicode=u'\xe5',),
                 dict(_path='not/existing/bar', fieldone='one value',
@@ -103,9 +103,9 @@ def aTSchemaUpdaterSetUp(test):
 
 def workflowUpdaterSetUp(test):
     sectionsSetUp(test)
-    
+
     from Products.CMFCore.WorkflowCore import WorkflowException
-    
+
     class MockPortal(object):
         _last_path = None
         def unrestrictedTraverse(self, path, default):
@@ -117,11 +117,11 @@ def workflowUpdaterSetUp(test):
                 return default
             self._last_path = path
             return self
-        
+
         @property
         def portal_workflow(self):
             return self
-        
+
         updated = ()
         def doActionFor(self, ob, action):
             assert ob == self
@@ -145,7 +145,7 @@ def workflowUpdaterSetUp(test):
                      title='Should not be updated, not an existing path'),
                 dict(_path='spam/eggs/incomplete',
                      title='Should not be updated, no transitions'),
-                dict(_path='/spam/eggs/nosuchtransition', 
+                dict(_path='/spam/eggs/nosuchtransition',
                      _transitions=('nonsuch',),
                      title='Should not be updated, no such transition'),
             )
@@ -321,27 +321,27 @@ def mimeencapsulatorSetUp(test):
 
 def uidSetUp(test):
     sectionsSetUp(test)
-    
+
     from Products.Archetypes.interfaces import IReferenceable
-    
+
     class MockReferenceableObject(object):
         implements(IReferenceable)
-        
+
         def __init__(self, path, portal):
             self.path = path
             self.portal = portal
-        
+
         _at_uid = 'xyz'
         def UID(self):
             return self._at_uid
-        
+
         def _setUID(self, uid):
             self.portal.uids_set.append((self.path, uid))
             self._at_uid = uid
-    
+
     class MockPortal(object):
         implements(IReferenceable)
-        
+
         _last_path = None
         def unrestrictedTraverse(self, path, default):
             if path[0] == '/':
@@ -353,16 +353,16 @@ def uidSetUp(test):
             if path.endswith('/notatcontent'):
                 return object()
             return MockReferenceableObject(path, self)
-        
+
         uids_set = []
-    
+
     test.globs['plone'] = MockPortal()
     test.globs['transmogrifier'].context = test.globs['plone']
-    
+
     class UIDSource(SampleSource):
         classProvides(ISectionBlueprint)
         implements(ISection)
-        
+
         def __init__(self, *args, **kw):
             super(UIDSource, self).__init__(*args, **kw)
             self.sample = (
@@ -376,6 +376,59 @@ def uidSetUp(test):
     provideUtility(UIDSource,
         name=u'plone.app.transmogrifier.tests.uidsource')
 
+
+def reindexObjectSetup(test):
+    sectionsSetUp(test)
+
+    from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
+    from Products.Archetypes.interfaces import IBaseObject
+
+    class MockCatalogAwareObject(CMFCatalogAware): pass
+
+    class MockPortal(object):
+        implements(IBaseObject)
+
+        _last_path = None
+        def unrestrictedTraverse(self, path, default):
+            if path[0] == '/':
+                return default # path is absolute
+            if isinstance(path, unicode):
+                return default
+            if path == 'not/existing/bar':
+                return default
+            if path == 'not/a/catalog/aware/content':
+                return default
+            self._last_path = path
+            return MockCatalogAwareObject(self)
+
+        @property
+        def portal_catalog(self):
+            return self
+
+        reindexed = ()
+        def reindexObject(self, ob):
+            self.reindexed += ((self._last_path, 'reindexed'),)
+
+    test.globs['plone'] = MockPortal()
+    test.globs['transmogrifier'].context = test.globs['plone']
+
+    class ReindexObjectSource(SampleSource):
+        classProvides(ISectionBlueprint)
+        implements(ISection)
+
+        def __init__(self, *args, **kw):
+            super(ReindexObjectSource, self).__init__(*args, **kw)
+            self.sample = (
+                dict(_path='/spam/eggs/foo'), # will be set
+                dict(_path='/spam/eggs/bar'), # will be set
+                dict(_path='/spam/eggs/baz'), # will be set
+                dict(_path='not/a/catalog/aware/content',
+                     title='Should not be reindexed, not a CMFCatalogAware content'),
+                dict(_path='not/existing/bar',
+                     title='Should not be reindexed, not an existing path'),
+            )
+    provideUtility(ReindexObjectSource,
+        name=u'plone.app.transmogrifier.tests.reindexobjectsource')
 
 def test_suite():
     return unittest.TestSuite((
@@ -401,5 +454,8 @@ def test_suite():
             'criteria.txt', setUp=criteriaSetUp, tearDown=tearDown),
         doctest.DocFileSuite(
             'mimeencapsulator.txt',
-            setUp=mimeencapsulatorSetUp, tearDown=tearDown),        
+            setUp=mimeencapsulatorSetUp, tearDown=tearDown),
+        doctest.DocFileSuite(
+            'reindexobject.txt',
+            setUp=reindexObjectSetup, tearDown=tearDown),
     ))
