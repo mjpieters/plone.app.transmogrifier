@@ -195,6 +195,10 @@ def browserDefaultSetUp(test):
                      title='Should not be updated, not an existing path'),
                 dict(_path='spam/eggs/incomplete',
                      title='Should not be updated, no layout or defaultpage'),
+                dict(_path='spam/eggs/emptylayout', _layout='',
+                     title='Should not be updated, no layout or defaultpage'),
+                dict(_path='spam/eggs/emptydefaultpage', _defaultpage='',
+                     title='Should not be updated, no layout or defaultpage'),
             )
     provideUtility(BrowserDefaultSource,
         name=u'plone.app.transmogrifier.tests.browserdefaultsource')

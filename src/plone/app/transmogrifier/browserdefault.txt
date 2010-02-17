@@ -67,6 +67,12 @@ id of the layout to use for the content item.
      ('title', 'Should not be updated, not an existing path')]
     [('_path', 'spam/eggs/incomplete'),
      ('title', 'Should not be updated, no layout or defaultpage')]
+    [('_layout', ''),
+     ('_path', 'spam/eggs/emptylayout'),
+     ('title', 'Should not be updated, no layout or defaultpage')]
+    [('_defaultpage', ''),
+     ('_path', 'spam/eggs/emptydefaultpage'),
+     ('title', 'Should not be updated, no layout or defaultpage')]
     >>> pprint.pprint(plone.updated)
     (('spam/eggs/foo', 'layout', 'spam'),
      ('spam/eggs/bar', 'defaultpage', 'eggs'),

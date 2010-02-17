@@ -6,6 +6,9 @@ Change History
 1.1 (unreleased)
 ================
 
+- Added support for empty layout and empty defaultpage. Don't set if empty
+  [toutpt]
+
 - Added UserConstructor section. See userconstructor.txt.
   [sylvainb]
 
