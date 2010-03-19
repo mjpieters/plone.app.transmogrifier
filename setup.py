@@ -56,7 +56,7 @@ setup(name=name,
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'collective.transmogrifier',
+          'collective.transmogrifier>=1.1',
           # -*- Extra requirements: -*-
       ],
       entry_points="""
