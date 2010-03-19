@@ -12,20 +12,15 @@ from Products.Archetypes.event import ObjectEditedEvent
 def _compare(fieldval, itemval):
     """Compare a AT Field value with an item value
     
-    Because AT fields return utf8 instead of unicode and item values may be 
-    unicode, and most of all because python tries to decode bytes when 
-    comparing a str and a unicode value, we need to special-case this
-    comparison. In case of a UnicodeDecodeError, fieldval being a str and
-    itemval being a unicode value, we'll decode fieldval and assume utf8 and
-    retry the comparison.
+    Because AT fields return utf8 instead of unicode and item values may be
+    unicode, we need to special-case this comparison. In case of fieldval
+    being a str and itemval being a unicode value, we'll decode fieldval and 
+    assume utf8 for the comparison.
     
     """
-    try:
-        return fieldval == itemval
-    except UnicodeDecodeError:
-        if isinstance(fieldval, str) and isinstance(itemval, unicode):
-            return fieldval.decode('utf8', 'replace') == itemval
-        raise
+    if isinstance(fieldval, str) and isinstance(itemval, unicode):
+        return fieldval.decode('utf8', 'replace') == itemval
+    return fieldval == itemval
 
 class ATSchemaUpdaterSection(object):
     classProvides(ISectionBlueprint)
