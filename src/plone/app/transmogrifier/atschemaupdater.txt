@@ -62,6 +62,4 @@ the corresponding value, using the field's mutator.
      ('fieldtwo', 2),
      ('title', 'Should not be updated, not an AT base object')]
     >>> pprint.pprint(plone.updated)
-    (('spam/eggs/foo', 'fieldone', 'one value'),
-     ('spam/eggs/foo', 'fieldunicode', u'\xe5'),
-     ('spam/eggs/foo', 'fieldtwo', 2))
+    (('spam/eggs/foo', 'fieldone', 'one value'), ('spam/eggs/foo', 'fieldtwo', 2))
