@@ -47,9 +47,4 @@
     name="plone.app.transmogrifier.reindexobject"
     />
 
-<utility
-    component=".userconstructor.UserConstructorSection"
-    name="plone.app.transmogrifier.userconstructor"
-    />
-
 </configure>
