@@ -3,7 +3,7 @@ Change History
 
 (name of developer listed in brackets)
 
-1.1 (unreleased)
+1.1 (2010-03-30)
 ================
 
 - Added Indexing section. See reindexobject.txt.
