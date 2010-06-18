@@ -60,6 +60,9 @@ class ATSchemaUpdaterSection(object):
                         continue
                     if not _compare(field.get(obj), v):
                         field.set(obj, v)
+                        mimetype_key = "%s.mimetype" % k
+                        if mimetype_key in item:
+                            field.setContentType(obj, item[mimetype_key])
                         changed = True
                 obj.unmarkCreationFlag()
 
