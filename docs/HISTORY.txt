@@ -6,6 +6,11 @@ Change History
 1.2 (unreleased)
 ================
 
+- Check for CatalogAware base class when reindexing an object instead of
+  CMFCatalogAware because in Plone 4 folders do not inherit from
+  CMFCatalogAware.
+  [buchi] 
+
 - Added the ability to set the mimetype of a field with a
   ``[key].mimetype`` key.
   [claytron]

@@ -392,10 +392,10 @@ def uidSetUp(test):
 def reindexObjectSetup(test):
     sectionsSetUp(test)
 
-    from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
+    from Products.CMFCore.CMFCatalogAware import CatalogAware
     from Products.Archetypes.interfaces import IBaseObject
 
-    class MockCatalogAwareObject(CMFCatalogAware): pass
+    class MockCatalogAwareObject(CatalogAware): pass
 
     class MockPortal(object):
         implements(IBaseObject)

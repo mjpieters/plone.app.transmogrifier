@@ -1,6 +1,6 @@
 from zope.interface import classProvides, implements
 
-from Products.CMFCore.CMFCatalogAware import CMFCatalogAware
+from Products.CMFCore.CMFCatalogAware import CatalogAware
 
 from collective.transmogrifier.interfaces import ISectionBlueprint
 from collective.transmogrifier.interfaces import ISection
@@ -28,7 +28,7 @@ class ReindexObjectSection(object):
             if ob is None:
                 yield item; continue # object not found
 
-            if not isinstance(ob, CMFCatalogAware):
+            if not isinstance(ob, CatalogAware):
                 yield item; continue # can't notify portal_catalog
 
             self.portal_catalog.reindexObject(ob) # update catalog
