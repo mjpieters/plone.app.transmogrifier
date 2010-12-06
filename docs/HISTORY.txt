@@ -6,10 +6,14 @@ Change History
 1.2 (unreleased)
 ================
 
+- Add a 'verbose' option to reindexobject blueprint
+  that logs the object currently reindexed and number of objects reindexed.
+  [thomasdesvenain]
+
 - Check for CatalogAware base class when reindexing an object instead of
   CMFCatalogAware because in Plone 4 folders do not inherit from
   CMFCatalogAware.
-  [buchi] 
+  [buchi]
 
 - Added the ability to set the mimetype of a field with a
   ``[key].mimetype`` key.
