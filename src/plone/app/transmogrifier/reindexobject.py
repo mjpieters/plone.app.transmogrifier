@@ -1,6 +1,9 @@
 from zope.interface import classProvides, implements
 
-from Products.CMFCore.CMFCatalogAware import CatalogAware
+try:
+    from Products.CMFCore.CMFCatalogAware import CatalogAware # Plone 4
+except ImportError:
+    from Products.CMFCore.CMFCatalogAware import CMFCatalogAware as CatalogAware
 
 from collective.transmogrifier.interfaces import ISectionBlueprint
 from collective.transmogrifier.interfaces import ISection
