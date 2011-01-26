@@ -33,7 +33,7 @@ class ReindexObjectSection(object):
                 yield item; continue
             path = item[pathkey]
 
-            ob = self.context.unrestrictedTraverse(path.lstrip('/'), None)
+            ob = self.context.unrestrictedTraverse(str(path).lstrip('/'), None)
             if ob is None:
                 yield item; continue # object not found
 

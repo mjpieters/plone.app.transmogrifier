@@ -36,7 +36,7 @@ class CriterionAdder(object):
 
             path = item[pathkey]
 
-            obj = self.context.unrestrictedTraverse(path.lstrip('/'), None)
+            obj = self.context.unrestrictedTraverse(str(path).lstrip('/'), None)
             if obj is None:         # path doesn't exist
                 yield item; continue
 

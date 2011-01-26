@@ -6,6 +6,9 @@ Change History
 1.2 (unreleased)
 ================
 
+- Convert paths to strings.
+  [elro]
+
 - Add a 'verbose' option to reindexobject blueprint
   that logs the object currently reindexed and number of objects reindexed.
   [thomasdesvenain]
