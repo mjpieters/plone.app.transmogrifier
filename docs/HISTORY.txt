@@ -6,6 +6,9 @@ Change History
 1.2 (unreleased)
 ================
 
+- Sections to disable and enable versioning within the pipeline.
+  [elro]
+
 - Convert paths to strings.
   [elro]
 

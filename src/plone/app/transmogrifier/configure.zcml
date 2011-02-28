@@ -47,4 +47,14 @@
     name="plone.app.transmogrifier.reindexobject"
     />
 
+<utility
+    component=".versioning.DisableVersioningSection"
+    name="plone.app.transmogrifier.versioning.disable"
+    />
+
+<utility
+    component=".versioning.EnableVersioningSection"
+    name="plone.app.transmogrifier.versioning.enable"
+    />
+
 </configure>
