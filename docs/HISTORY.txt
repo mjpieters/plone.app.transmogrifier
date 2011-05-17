@@ -21,10 +21,6 @@ Change History
   CMFCatalogAware.
   [buchi]
 
-- Added the ability to set the mimetype of a field with a
-  ``[key].mimetype`` key.
-  [claytron]
-
 1.1 (2010-03-30)
 ================
 

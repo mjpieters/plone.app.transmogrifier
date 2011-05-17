@@ -52,7 +52,7 @@ def aTSchemaUpdaterSetUp(test):
 
         _last_field = None
         def getField(self, name):
-            if not name.endswith('mimetype') and name.startswith('field'):
+            if name.startswith('field'):
                 self._last_field = name
                 return self
 
@@ -65,10 +65,6 @@ def aTSchemaUpdaterSetUp(test):
         updated = ()
         def set(self, ob, val):
             self.updated += ((self._last_path, self._last_field, val),)
-
-        mimes = ()
-        def setContentType(self, ob, val):
-            self.mimes += ((self._last_path, self._last_field, val),)
 
         def checkCreationFlag(self):
             return len(self.updated) % 2
@@ -101,10 +97,6 @@ def aTSchemaUpdaterSetUp(test):
                      title='Should not be updated, no path'),
                 dict(_path='/spam/eggs/notatcontent', fieldtwo=2,
                      title='Should not be updated, not an AT base object'),
-                {'_path': '/spam/eggs/bar',
-                 'fieldtext': '<p>some html code</p>',
-                 'fieldtext.mimetype': 'text/html',
-                 'title': 'Mimetype should be set'}
             )
     provideUtility(SchemaSource,
         name=u'plone.app.transmogrifier.tests.schemasource')

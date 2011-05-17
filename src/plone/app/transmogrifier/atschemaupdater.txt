@@ -29,11 +29,6 @@ Paths to objects are always interpreted as relative to the context. Any
 writable field who's id matches a key in the current item will be updated with
 the corresponding value, using the field's mutator.
 
-The mime type of a field can be set by adding a special key. The format of the
-key is ``[key].mimetype``. A good example would be the ``text`` field of a
-Document, the special key would be ``text.mimetype``. The value can be any of
-the available markup formats (e.g. ``text/html``, ``text/restructured``, etc.)
-
     >>> import pprint
     >>> atschema = """
     ... [transmogrifier]
@@ -66,13 +61,5 @@ the available markup formats (e.g. ``text/html``, ``text/restructured``, etc.)
     [('_path', '/spam/eggs/notatcontent'),
      ('fieldtwo', 2),
      ('title', 'Should not be updated, not an AT base object')]
-    [('_path', '/spam/eggs/bar'),
-     ('fieldtext', '<p>some html code</p>'),
-     ('fieldtext.mimetype', 'text/html'),
-     ('title', 'Mimetype should be set')]
     >>> pprint.pprint(plone.updated)
-    (('spam/eggs/foo', 'fieldone', 'one value'),
-     ('spam/eggs/foo', 'fieldtwo', 2),
-     ('spam/eggs/bar', 'fieldtext', '<p>some html code</p>'))
-    >>> pprint.pprint(plone.mimes)
-    (('spam/eggs/bar', 'fieldtext', 'text/html'),)
+    (('spam/eggs/foo', 'fieldone', 'one value'), ('spam/eggs/foo', 'fieldtwo', 2))
