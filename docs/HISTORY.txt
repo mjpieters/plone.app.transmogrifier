@@ -3,7 +3,7 @@ Change History
 
 (name of developer listed in brackets)
 
-1.2 (unreleased)
+1.2 (2011-05-23)
 ================
 
 - Sections to disable and enable versioning within the pipeline.
