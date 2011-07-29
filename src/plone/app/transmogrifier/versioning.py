@@ -41,13 +41,22 @@ class DisableVersioningSection(BaseVersioningSection):
     
     def __iter__(self):
         for item in self.previous:
+            # http://stackoverflow.com/questions/2339358/workaround-for-python-2-4s-yield-not-allowed-in-try-block-with-finally-clause
+            #try:
+            #    self.save()
+            #    self.clear()
+            #    yield item
+            #finally:
+            #    self.restore()
+
+            # XXX I'm not entirely sure if the code below does the same thing as the code above. [aclark]
             try:
                 self.save()
                 self.clear()
                 yield item
-            finally:
+            except:
                 self.restore()
-
+            self.restore()
 
 class EnableVersioningSection(BaseVersioningSection):
     classProvides(ISectionBlueprint)
