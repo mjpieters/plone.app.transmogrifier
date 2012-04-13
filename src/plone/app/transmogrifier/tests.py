@@ -62,9 +62,29 @@ def aTSchemaUpdaterSetUp(test):
             if self._last_field.endswith('unicode'):
                 return u'\xe5'.encode('utf8')
 
+        @property
+        def accessor(self):
+            if self._last_field in ('fieldone',):
+                return 'accessor_method'
+            else:
+                return None
+
+        def accessor_method(self):
+            return '%s-by-mutator' % self.get(self)
+
         updated = ()
         def set(self, ob, val):
             self.updated += ((self._last_path, self._last_field, val),)
+
+        @property
+        def mutator(self):
+            if self._last_field in ('fieldone',):
+                return 'mutator_method'
+            else:
+                return None
+
+        def mutator_method(self, value):
+            return self.set(self, '%s-by-mutator' % value)
 
         def checkCreationFlag(self):
             return len(self.updated) % 2

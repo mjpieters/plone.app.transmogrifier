@@ -3,6 +3,12 @@ Change History
 
 (name of developer listed in brackets)
 
+1.3 (unreleased)
+================
+
+- Support field accessor and mutator for updating field values with schemaupdater.
+  [phgross]
+
 1.2 (2011-05-23)
 ================
 
