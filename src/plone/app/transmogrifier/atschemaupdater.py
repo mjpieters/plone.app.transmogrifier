@@ -22,6 +22,20 @@ def _compare(fieldval, itemval):
         return fieldval.decode('utf8', 'replace') == itemval
     return fieldval == itemval
 
+
+def get(field, obj):
+    if field.accessor is not None:
+        return getattr(obj, field.accessor)()
+    return field.get(obj)
+
+
+def set(field, obj, val):
+    if field.mutator is not None:
+        getattr(obj, field.mutator)(val)
+    else:
+        field.set(obj, val)
+
+
 class ATSchemaUpdaterSection(object):
     classProvides(ISectionBlueprint)
     implements(ISection)
@@ -58,8 +72,8 @@ class ATSchemaUpdaterSection(object):
                     field = obj.getField(k)
                     if field is None:
                         continue
-                    if not _compare(field.get(obj), v):
-                        field.set(obj, v)
+                    if not _compare(get(field, obj), v):
+                        set(field, obj, v)
                         changed = True
                 obj.unmarkCreationFlag()
 
